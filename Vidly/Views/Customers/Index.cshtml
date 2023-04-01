@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Vidly.Models.Customer>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Customers - My ASP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="text-center"></div>
+    <h2>Customers</h2>
+<div>
+    @if (!Model.Any())
+    {
+        <p>We don't have any customers yet</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Customer</th>
+                    <th>SubscribedToNewsletter</th>
+                    <th>Discount Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@customer.Id</td>
+                        <td>@Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id}, null)</td>
+                        <td>@customer.IsSubscribedToNewsletter</td>
+                        <td>@customer.MembershipType.DiscountRate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
