@@ -9,7 +9,7 @@ namespace Vidly.Models
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Admin> Admins { get; set; }
- 
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<Renting> Rentings { get; set; }
         public SiteContext(DbContextOptions<SiteContext> options) : base(options)

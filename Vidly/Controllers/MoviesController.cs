@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-
+using Microsoft.EntityFrameworkCore;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -8,6 +8,16 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
+        private SiteContext _context;
+        public MoviesController()
+        {
+            _context = new SiteContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         //GET: Movies/Random
         public ActionResult Random()
         {
@@ -90,7 +100,7 @@ namespace Vidly.Controllers
         public ViewResult Index()
         {
 
-            var movies = GetMovies();
+            var movies = _context.Movies.Include(c => c.Genre).ToList();
             //ViewData["MovieName"] = "Shangqi";
             //ViewData["Customer"] = "Chen";
             return View(movies);
@@ -114,6 +124,15 @@ namespace Vidly.Controllers
         public ActionResult ByReleaseDate(int year, int month)
         {
             return Content(year + "/" + month);
+        }
+
+        public ActionResult Details(int id) {
+            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
         }
     }
 }

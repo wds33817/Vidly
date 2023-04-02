@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Vidly.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Vidly.Controllers
 {
@@ -16,17 +16,22 @@ namespace Vidly.Controllers
         {
             _context.Dispose();
         }
+        
+        public ActionResult New()
+        {
+            return View();
+        }
 
         public ViewResult Index()
         {
             var customers = _context.Customers.Include(c => c.MembershipType).ToList();
-            var customertype = _context.MembershipTypes.ToList();
+            //var customertype = _context.MembershipTypes.ToList();
             return View(customers);
         }
 
         public ActionResult Details(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
             {
